@@ -35,11 +35,12 @@ public class DatabaseConfig {
     public CommandLineRunner testDatabaseConnection(DataSource dataSource) {
         return args -> {
             try {
+                System.out.println("Testing database connection...");
                 dataSource.getConnection().close();
-                logger.info("Successfully connected to Supabase database!");
+                System.out.println("Database connection successful!");
             } catch (Exception e) {
-                logger.error("Failed to connect to Supabase database: {}", e.getMessage());
-                throw new RuntimeException("Database connection test failed", e);
+                System.err.println("Failed to connect to database: " + e.getMessage());
+                e.printStackTrace();
             }
         };
     }

@@ -1,15 +1,14 @@
 package com.hackaton.project.security;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Component;
-
 import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -19,11 +18,15 @@ import io.jsonwebtoken.security.Keys;
 
 @Component
 public class JwtTokenUtil {
-    @Value("${JWT_SECRET}")
-    private String secret;
-    
-    @Value("${JWT_EXPIRATION_MS}")
-    private int expirationMs;
+    private final String secret;
+    private final int expirationMs;
+
+    public JwtTokenUtil(
+            @Value("${JWT_SECRET}") String secret,
+            @Value("${JWT_EXPIRATION_MS}") int expirationMs) {
+        this.secret = secret;
+        this.expirationMs = expirationMs;
+    }
 
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
